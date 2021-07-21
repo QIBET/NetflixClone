@@ -1,2 +1,22 @@
 {% extends 'base.html' %}
-<h1>MY GOD IS GREAT</h1>
+{% block content %}
+<div class="container">
+
+    <!-- Poster background -->
+    {% for result in results %}
+    <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 movie-card">
+        <img src="{{ result.homepage }}" alt="{{ result.title }} poster" class="img-responsive">
+        <li class="text-center">
+            <a href="/movie/{{movie.id}}">
+                {{ result.overview}}</a>
+        </li>
+    </div>
+
+    {% endfor %}
+
+   
+
+    
+
+</div>
+{%endblock%}
