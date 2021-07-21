@@ -1,22 +1,36 @@
 {% extends 'base.html' %}
-{% block content %}
-<div class="container">
+{%block content%}
+
+<div class="container" style="padding-top: 70px;">
 
     <!-- Poster background -->
-    {% for result in results %}
-    <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 movie-card">
-        <img src="{{ result.homepage }}" alt="{{ result.title }} poster" class="img-responsive">
-        <li class="text-center">
-            <a href="/movie/{{movie.id}}">
-                {{ result.overview}}</a>
-        </li>
-    </div>
+    <div class="row">
+        {% for movie in all_movies %}
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 posterPath" style="background: url('https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}') no-repeat center center">
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 movie-details" >
+            <h3>{{ movie.title }}</h3>
+
+            <p class="overview"> {{ movie.overview }}</p>
+
+            <p class="ratings"> <b> {{ movie.vote_average }}</b> - <i>{{ movie.vote_count}} votes </i> </p>
+            <a class="ratings" href="/movie/review/new/{{movie.id}}"> Write a new review</a>
+
+
+        </div>
 
     {% endfor %}
 
-   
+    </div>
 
     
 
 </div>
+
+    
+  
+   
+  
 {%endblock%}

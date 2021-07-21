@@ -1,12 +1,23 @@
 from django.shortcuts import render
+from .models import Movie
 import requests
 
-
-# Create your views here.
 def index(request):
-    title = "Netflix Clone Application"
-    response = requests.get('https://api.themoviedb.org/3/movie/550?api_key=3d0384b337f97fac152e1083e54e76e2')
-    # transfor the response to json objects
-    results = response.json()
 
-    return render(request,'index.html',{"results":results,"title":title})
+    movie_url='https://api.themoviedb.org/3/movie/popular?api_key=d3b72290034dd8b0a485d50b2ba0c46f'
+    
+    response=requests.get(movie_url)
+    data=response.json()
+    movies=data['results'] 
+ 
+    for movie in movies:
+        movie_data=Movie(
+            title=movie['title'],
+            overview =movie['overview'],
+            poster_path=movie['poster_path'],
+            vote_average=movie['vote_average'],
+            vote_count=movie['vote_count']
+            )
+        saved_data=movie_data.save()
+        all_movies=Movie.objects.all()
+    return render(request, 'index.html', {"all_movies":all_movies})
