@@ -9,3 +9,56 @@ def index(request):
     results = response.json()
 
     return render(request,'index.html',{"results":results['results'],"title":title})
+
+    <div class="container" style="padding-top: 70px;">
+
+    <!-- Poster background -->
+    <div class="row">
+        {% for movie in all_movies %}
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 posterPath" style= "background: url('https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}') no-repeat center center">
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 movie-details" style="padding-bottom: 2px;" >
+            <h3>{{ movie.title }}</h3>
+
+            <p> {{ movie.overview }}</p>
+
+            <p> <b> {{ movie.vote_average }}</b> - <i>{{ movie.vote_count}} votes </i> </p>
+           
+
+
+        </div>
+
+    {% endfor %}
+
+    </div>
+
+    
+
+</div>
+
+    #views.py
+    from django.shortcuts import render
+from .models import Movie
+import requests
+
+def index(request):
+
+    movie_url='https://api.themoviedb.org/3/movie/popular?api_key=d3b72290034dd8b0a485d50b2ba0c46f'
+    
+    response=requests.get(movie_url)
+    data=response.json()
+    movies=data['results'] 
+ 
+    for movie in movies:
+        movie_data=Movie(
+            title=movie['title'],
+            overview =movie['overview'],
+            poster_path=movie['poster_path'],
+            vote_average=movie['vote_average'],
+            vote_count=movie['vote_count']
+            )
+        saved_data=movie_data.save()
+        all_movies=Movie.objects.all()
+    return render(request, 'index.html', {"all_movies":all_movies})
